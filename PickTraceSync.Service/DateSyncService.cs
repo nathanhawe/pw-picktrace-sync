@@ -46,5 +46,20 @@ namespace PickTraceSync.Service
 				_logger.LogError("An error occured during SynchronizeDate(). Message: {message}", ex.Message);
 			}
 		}
+
+		public void SynchronizeDateRange(DateTime startDate, DateTime endDate)
+		{
+			var start = new DateTime(startDate.Year, startDate.Month, startDate.Day);
+			var end = new DateTime(endDate.Year, endDate.Month, endDate.Day);
+			var span = end - start;
+			
+			for(int i = 0; i <= span.Days; i++ )
+			{
+				SynchronizeDate(start.AddDays(i));
+
+				// Reset internal state of EF context
+				_context.ChangeTracker.Clear();
+			}
+		}
 	}
 }
