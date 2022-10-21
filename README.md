@@ -16,18 +16,22 @@ the application secrets.  The structure of the file is:
 
 ```json
 {
-	"PickTrace":{
-		"Username" : "...",
+	"PickTrace": {
+		"Username": "...",
 		"Password": "...",
 		"OrgId": "..."
 	},
-	"ConnectionString": "..."
+	"ConnectionStrings": {
+		"DWConnection" : "..."
+	}
 }
 ```
-HOW TO BUILD
-HOW TO MIGRATE DATABASE
-HOW TO CONFIGURE
-HOW TO RUN
+### Build Instructions
+### Migrations
+Database migration scripts can be generated using Entity Framework migrations from a developer console: `dotnet ef migrations script <FromMigrationName> --project PickTraceSync.Data --startup-project PickTraceSync --idempotent --output <FilePath>`
+
+### Configuration
+### Execution
 
 ## Secrets
 | Key | Description |
@@ -35,4 +39,4 @@ HOW TO RUN
 | PickTrace:Username | The username of the account with access to PickTrace. |
 | PickTrace:Password | The password associated with username. |
 | PickTrace:OrgId | The organizational ID provided by PickTrace. |
-| ConnectionString | The connection string the application will use to connect the Data Warehouse database (e.g., "Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = PRIMADW") |
+| ConnectionStrings:DWConnection | The connection string the application will use to connect the Data Warehouse database (e.g., "Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = PRIMADW") |

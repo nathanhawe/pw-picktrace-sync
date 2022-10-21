@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PickTraceSync.Data;
 using PickTraceSync.Data.PickTraceApi;
@@ -25,12 +26,15 @@ namespace PickTraceSync.Tests
 		public void Setup()
 		{
 			_configuration ??= ConfigurationHelper.GetIConfigurationRoot();
-			var connectionString = _configuration["ConnectionString"];
 			var username = _configuration["PickTrace:Username"];
 			var password = _configuration["PickTrace:Password"];
 			var orgId = _configuration["PickTrace:OrgId"];
 
-			_context = new PrimaDwContext(connectionString);
+			var options = new DbContextOptionsBuilder<PrimaDwContext>()
+				.UseSqlServer(_configuration.GetConnectionString("DWConnection"))
+				.Options;
+
+			_context = new PrimaDwContext(options);
 
 			var authenticator = new PickTraceAuthenticator(new MockLogger<PickTraceAuthenticator>(), _httpHandler, username, password, orgId);
 			var searchRepo = new PickTracePayrollExportsSearch(new MockLogger<PickTracePayrollExportsSearch>(), _httpHandler, authenticator);

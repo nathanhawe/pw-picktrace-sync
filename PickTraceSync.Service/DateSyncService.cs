@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace PickTraceSync.Service
 				_context.SaveChanges();
 
 				// Invoke the stored procedure to merge the records into the production table.
-				_context.Database.ExecuteSqlCommand("EXEC dbo.PickTrace_Fact_Payroll_MergeFromStaging");
+				_context.Database.ExecuteSqlRaw("EXEC dbo.PickTrace_Fact_Payroll_MergeFromStaging");
 
 			}
 			catch(Exception ex)

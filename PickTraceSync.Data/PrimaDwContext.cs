@@ -1,36 +1,24 @@
-﻿using PickTraceSync.Domain;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
+﻿using Microsoft.EntityFrameworkCore;
+using PickTraceSync.Domain;
 
 namespace PickTraceSync.Data
 {
 	public class PrimaDwContext : DbContext
 	{
-		/// <summary>
-		/// Default constructor will use the local SQL express entity for development.  Production will pass a connection
-		/// string to the alternate constructor.
-		/// </summary>
-		public PrimaDwContext() : base("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = PRIMADW") { }
-		public PrimaDwContext(string connectionString) : base(connectionString) { }
+		public PrimaDwContext() { }
+		public PrimaDwContext(DbContextOptions<PrimaDwContext> options) : base(options) { }
 		
 		 
 		public DbSet<PayrollExportRecord> PickTrace_Fact_Payroll_Staging { get; set; }
 		public DbSet<PickTracePayrollModel> PickTrace_Fact_Payroll { get; set; }
 
-
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			byte scale = 18;
 			byte precision = 8;
-
-			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+			
 
 			/* Add scale/precision to PayrollExportRecord entities */
-			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.StartDatetime).HasColumnType("datetime2");
-			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.ShiftStartTime).HasColumnType("datetime2");
-			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.EndDatetime).HasColumnType("datetime2");
-			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.UpdatedAt).HasColumnType("datetime2");
-			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.DownloadedAt).HasColumnType("datetime2");
 
 			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.LocationAcreage).HasPrecision(scale, precision);
 			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.HourlyRate).HasPrecision(scale, precision);
@@ -65,11 +53,6 @@ namespace PickTraceSync.Data
 			modelBuilder.Entity<PayrollExportRecord>().Property(x => x.TotalOvertimePay).HasPrecision(scale, precision);
 
 			/* Add scale/precision to PickTracePayrollModel entities */
-			modelBuilder.Entity<PickTracePayrollModel>().Property(x => x.StartDatetime).HasColumnType("datetime2");
-			modelBuilder.Entity<PickTracePayrollModel>().Property(x => x.ShiftStartTime).HasColumnType("datetime2");
-			modelBuilder.Entity<PickTracePayrollModel>().Property(x => x.EndDatetime).HasColumnType("datetime2");
-			modelBuilder.Entity<PickTracePayrollModel>().Property(x => x.UpdatedAt).HasColumnType("datetime2");
-			modelBuilder.Entity<PickTracePayrollModel>().Property(x => x.DownloadedAt).HasColumnType("datetime2");
 
 			modelBuilder.Entity<PickTracePayrollModel>().Property(x => x.LocationAcreage).HasPrecision(scale, precision);
 			modelBuilder.Entity<PickTracePayrollModel>().Property(x => x.HourlyRate).HasPrecision(scale, precision);
