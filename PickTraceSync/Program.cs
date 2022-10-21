@@ -14,11 +14,16 @@ namespace PickTraceSync
 {
 	public class Program
 	{
+#if DEBUG
 		public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
 			.AddJsonFile("appsettings.json", true)
 			.AddUserSecrets<Program>()
 			.Build();
-
+#else
+		public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+			.AddJsonFile("appsettings.json", true)
+			.Build();
+#endif
 		static void Main(string[] args)
 		{
 			Log.Logger = new LoggerConfiguration()
