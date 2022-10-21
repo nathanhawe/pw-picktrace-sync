@@ -36,7 +36,7 @@ namespace PickTraceSync.Data.PickTraceApi
 		{
 			try
 			{
-				_logger.LogDebug($"PickTracePayrollExportsSearch.Get() invoked. start:'', end:'', employerNames:'', useUpdatedAt: '', includeArchived: ''.");
+				_logger.LogDebug("PickTracePayrollExportsSearch.Get() invoked. start:'{start}', end:'{end}', employerNames:'{employerNames}', useUpdatedAt: '{useUpdatedAt}', includeArchived: '{includeArchived}'.", start, end, employerNames, useUpdatedAt, includeArchived);
 				return GetAsync(start, end, employerNames, useUpdatedAt, includeArchived).Result;	
 			}
 			catch(Exception ex)
@@ -69,12 +69,9 @@ namespace PickTraceSync.Data.PickTraceApi
 			request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			request.Headers.Add("PT-Organization-ID", orgId);
 
-			_logger.LogDebug(jsonContent.ReadAsStringAsync().Result);
-
 			using HttpResponseMessage response = _httpHandler.Send(request);
 
 			response.EnsureSuccessStatusCode();
-
 
 			var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 			options.Converters.Add(new CustomDecimalConverter());

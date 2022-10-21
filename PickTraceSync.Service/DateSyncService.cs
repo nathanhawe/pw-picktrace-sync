@@ -40,6 +40,8 @@ namespace PickTraceSync.Service
 				// Invoke the stored procedure to merge the records into the production table.
 				_context.Database.ExecuteSqlRaw("EXEC dbo.PickTrace_Fact_Payroll_MergeFromStaging");
 
+				_logger.LogInformation("Finished processing {count} records.", response.WageData.Count);
+
 			}
 			catch(Exception ex)
 			{

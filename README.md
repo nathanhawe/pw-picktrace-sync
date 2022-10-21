@@ -23,6 +23,9 @@ the application secrets.  The structure of the file is:
 	},
 	"ConnectionStrings": {
 		"DWConnection" : "..."
+	},
+	"Serilog": {
+		...
 	}
 }
 ```
@@ -31,6 +34,7 @@ the application secrets.  The structure of the file is:
 Database migration scripts can be generated using Entity Framework migrations from a developer console: `dotnet ef migrations script <FromMigrationName> --project PickTraceSync.Data --startup-project PickTraceSync --idempotent --output <FilePath>`
 
 ### Configuration
+Default serilog configuration is included in the appsettings.json file in the project.  This file can be expanded to include the other configuration information.
 ### Execution
 
 ## Secrets
