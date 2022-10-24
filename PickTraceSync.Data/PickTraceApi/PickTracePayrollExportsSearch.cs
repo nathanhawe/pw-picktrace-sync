@@ -71,6 +71,27 @@ namespace PickTraceSync.Data.PickTraceApi
 
 			using HttpResponseMessage response = _httpHandler.Send(request);
 
+			// Check for too many requests response
+			if(response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+			{
+				// The request was rejected due to rate limiting.  Determine the amount of time to wait
+				// before attempting another request.  Default to 60 seconds if no value can be found.
+				int secondsToWait = 60;
+				if (response.Headers.TryGetValues("ratelimit-retryafter", out IEnumerable<string> temp))
+				{
+					if (int.TryParse(temp.First(), out int temp2))
+					{
+						secondsToWait = temp2;
+					}
+				}
+
+				return new PayrollExportsSearchResponse
+				{
+					IsRateLimited = true,
+					RetryAfterSeconds = secondsToWait
+				};
+			}
+			
 			response.EnsureSuccessStatusCode();
 
 			var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PickTraceSync.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,17 @@ namespace PickTraceSync.Service
 		public void SynchronizeDate(DateTime date)
 		{
 			_logger.LogDebug("Attempting to synchronize the date: {date}.", date);
-
+			PayrollExportsSearchResponse response;
 			try
 			{
 				// Get the PickTrace records for the date provided
 				var truncatedDate = new DateTime(date.Year, date.Month, date.Day);
-				var response = _searchRepo.Get(truncatedDate, truncatedDate.AddDays(1), new List<string>(), true, true);
+
+				while((response = _searchRepo.Get(truncatedDate, truncatedDate.AddDays(1), new List<string>(), true, true)).IsRateLimited)
+				{
+					_logger.LogInformation("Retrying in '{seconds}'", response.RetryAfterSeconds);
+					Thread.Sleep(response.RetryAfterSeconds * 1000);
+				}
 
 				// Add all of the records into the staging table.
 				_context.PickTrace_Fact_Payroll_Staging.AddRange(response.WageData);

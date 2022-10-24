@@ -50,7 +50,7 @@ namespace PickTraceSync.Tests
 		[TestMethod]
 		public void SynchronizeRange()
 		{
-			_service.SynchronizeDateRange(DateTime.Now.AddDays(-1), DateTime.Now);
+			_service.SynchronizeDateRange(new DateTime(2021, 8, 17), new DateTime(2021, 8, 30));
 		}
 	}
 }
