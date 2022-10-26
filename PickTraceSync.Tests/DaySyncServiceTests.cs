@@ -44,13 +44,13 @@ namespace PickTraceSync.Tests
 		[TestMethod]
 		public void SynchronizeDate()
 		{
-			_service.SynchronizeDate(DateTime.Now);
+			_service.SynchronizeDate(new DateTime(2022,7,3));
 		}
 
 		[TestMethod]
 		public void SynchronizeRange()
 		{
-			_service.SynchronizeDateRange(new DateTime(2021, 8, 17), new DateTime(2021, 8, 30));
+			_service.SynchronizeDateRange(new DateTime(2022, 7, 1), new DateTime(2022, 7, 3));
 		}
 	}
 }

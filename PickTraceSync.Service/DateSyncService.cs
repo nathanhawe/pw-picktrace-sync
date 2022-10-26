@@ -40,8 +40,7 @@ namespace PickTraceSync.Service
 				}
 
 				// Add all of the records into the staging table.
-				_context.PickTrace_Fact_Payroll_Staging.AddRange(response.WageData);
-				_context.SaveChanges();
+				_context.BulkInsert(response.WageData);
 
 				// Invoke the stored procedure to merge the records into the production table.
 				_context.Database.ExecuteSqlRaw("EXEC dbo.PickTrace_Fact_Payroll_MergeFromStaging");

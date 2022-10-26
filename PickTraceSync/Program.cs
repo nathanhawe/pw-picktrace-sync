@@ -40,6 +40,7 @@ namespace PickTraceSync
 							, sqlServerOptionsAction: sqlOptions =>
 							{
 								sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+								sqlOptions.CommandTimeout(90);
 							}
 						)
 					);
