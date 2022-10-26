@@ -7,6 +7,16 @@ namespace PickTraceSync.Data
 {
 	public class PrimaDwContext : DbContext
 	{
+		private string? _connectionString;
+		private string ConnectionString { get
+			{
+				if (string.IsNullOrWhiteSpace(_connectionString))
+				{
+					_connectionString = this.Database.GetDbConnection().ConnectionString;
+				}
+				return _connectionString;
+			} 
+		}
 		public PrimaDwContext() { }
 		public PrimaDwContext(DbContextOptions<PrimaDwContext> options) : base(options) { }
 		
@@ -286,8 +296,7 @@ namespace PickTraceSync.Data
 				table.Rows.Add(row);
 			}
 
-			var connectionString = this.Database.GetDbConnection().ConnectionString;
-			using var connection = new SqlConnection(connectionString);
+			using var connection = new SqlConnection(ConnectionString);
 			connection.Open();
 			var transaction = connection.BeginTransaction();
 			try
