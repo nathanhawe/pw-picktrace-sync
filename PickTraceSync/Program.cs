@@ -67,7 +67,7 @@ namespace PickTraceSync
 			{
 				// Default execution, run for today's date.
 				Console.WriteLine("Default");
-				syncService.SynchronizeDate(DateTime.Now);
+				syncService.SynchronizeDate(DateTime.Now.AddDays(-1));
 
 				return;
 			}
