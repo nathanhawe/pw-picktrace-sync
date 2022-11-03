@@ -3,6 +3,10 @@
 	public class HttpClientHandler : IHttpHandler
 	{
 		private readonly HttpClient _client = new();
+		public HttpClientHandler()
+		{
+			_client.Timeout = TimeSpan.FromMinutes(10);
+		}
 
 		public HttpResponseMessage Get(string url)
 		{
