@@ -43,7 +43,7 @@ namespace PickTraceSync.Service
 				_context.BulkInsert(response.WageData);
 
 				// Invoke the stored procedure to merge the records into the production table.
-				_context.Database.SetCommandTimeout(TimeSpan.FromMinutes(3));
+				_context.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
 				_context.Database.ExecuteSqlRaw("EXEC dbo.PickTrace_Fact_Payroll_MergeFromStaging");
 
 				_logger.LogInformation("Finished processing {count} records.", response.WageData.Count);

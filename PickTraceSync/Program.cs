@@ -60,7 +60,7 @@ namespace PickTraceSync
 				.Build();
 
 
-			Log.Logger.Information("Application started.");
+			Log.Logger.Information("Application started with args '{args}'.", args);
 			var syncService = host.Services.GetService<IDateSynchronizationService>();
 
 			if (args.Length == 0)
